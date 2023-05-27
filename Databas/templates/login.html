@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Databasprojekt</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Logga in</h1>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+    <form action="/login" method="post">
+        <input type="text" name="student_id" placeholder="Skriv ditt student ID">
+        <input type="submit" value="Logga in">
+    </form>
+</body>
+</html>

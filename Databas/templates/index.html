@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Databasprojekt</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="grid-container">
+        
+        <div class="grid-item full-width">
+            <h1>Du är inloggad som: {{ student_name }}</h1>
+            <form action="/logout" method="get">
+                <input type="submit" value="Logga ut">
+            </form>
+        </div>
+
+        <div class="grid-item">
+            <h2>Tillgängliga kurser</h2>
+            {% if available_courses %}
+                <form action="/register" method="post">
+                    <ul>
+                        {% for course in available_courses %}
+                            <li>
+                                <input type="checkbox" name="courses[]" value="{{ course[1] }}">
+                                {{ course[0] }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <input type="submit" value="Registrera">
+                </form>
+            {% else %}
+                <p>Det finns inga kurser att registrera sig på</p>
+            {% endif %}
+        </div>
+
+        <div class="grid-item">
+            <h2>Alla kurser</h2>
+            {% if all_courses %}
+                <ul>
+                    {% for course in all_courses %}
+                        <li>
+                            {{ course[0] }} ({{ course[2] }} studenter registrerade)
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+        <div class="grid-item">
+            <h2>Registrerade kurser</h2>
+            {% if registered_courses %}
+                <ul>
+                    {% for course in registered_courses %}
+                        <li>
+                            {{ course[0] }}
+                            <form action="/remove" method="post" style="display:inline;">
+                                <input type="hidden" name="course_id" value="{{ course[1] }}">
+                                <input type="submit" value="Avregistrera">
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Du är inte registrerad på några kurser</p>
+            {% endif %}
+        </div>
+        
+        <div class="grid-item">
+            <h2>Studentlista för kurser</h2>
+            {% if registered_students %}
+                <ul>
+                    {% for course in registered_students %}
+                        <li>
+                            <strong>{{ course[1] }}:</strong>
+                            <ul>
+                                {% if course[2] %}
+                                    {% for student in course[2].split(',') %}
+                                        <li>{{ student }}</li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li>Inga registrerade studenter</li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+    </div>
+</body>
+</html>
